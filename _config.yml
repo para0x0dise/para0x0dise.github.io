@@ -281,3 +281,4 @@ defaults:
       related: false
       sidebar:
         nav: "docs"
+theme: jekyll-theme-cayman
