@@ -1,0 +1,33 @@
+# main links
+main:
+  - title: "Malware Analysis"
+    url: /categories/#malware-analysis
+  - title: "Reverse Engineering"
+    url: /categories/#reverse-engineering
+
+
+docs:
+  - title: "MALWARE ANALYSIS"
+    children:
+      - title: "LokiBot"
+        url: /malware analysis/LokiBot-Stealing-Credentials/
+      - title: "PrincessLocker V2.0"
+        url: /malware analysis/PrincessLocker-V2.0-ransomware-with-not-so-royal-encryption/
+
+  - title: "REVERSE ENGINEERING"
+    children:
+      - title: "forn00bies Level-2"
+        url: /reverse engineering/forn00bies-Level-2/
+      - title: "forn00bies Level-3"
+        url: /reverse engineering/forn00bies-Level-3/
+      - title: "CrackMe Created By Rayko"
+        url: /reverse engineering/CrackMe-Created-By-Rayko/
+
+  # - title: "About"
+  #   url: https://mmistakes.github.io/minimal-mistakes/about/
+  # - title: "Sample Posts"
+  #   url: /year-archive/
+  # - title: "Sample Collections"
+  #   url: /collection-archive/
+  # - title: "Sitemap"
+  #   url: /sitemap/
