@@ -2,8 +2,8 @@
 main:
   - title: "Malware Analysis"
     url: /categories/#malware-analysis
-  - title: "Reverse Engineering"
-    url: /categories/#reverse-engineering
+  - title: "CrackMes"
+    url: /categories/#CrackMes
 
 
 docs:
@@ -14,14 +14,16 @@ docs:
       - title: "PrincessLocker V2.0"
         url: /malware analysis/PrincessLocker-V2.0-ransomware-with-not-so-royal-encryption/
 
-  - title: "REVERSE ENGINEERING"
+  - title: "CrackMes"
     children:
       - title: "forn00bies Level-2"
-        url: /reverse engineering/forn00bies-Level-2/
+        url: /CrackMes/forn00bies-Level-2/
       - title: "forn00bies Level-3"
-        url: /reverse engineering/forn00bies-Level-3/
+        url: /CrackMes/forn00bies-Level-3/
       - title: "CrackMe Created By Rayko"
-        url: /reverse engineering/CrackMe-Created-By-Rayko/
+        url: /CrackMes/CrackMe-Created-By-Rayko/
+      - title: "Mission: PowerGrid"
+        url: /CrackMes/Mission-PowerGrid/
 
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
