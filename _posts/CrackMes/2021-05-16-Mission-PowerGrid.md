@@ -154,6 +154,9 @@ The condition variable is `10000001`, we can bypass the `RCR` operation and get 
 
 [![20](/assets/images/Reverse-Engineering/PowerGrid/20.png)](/assets/images/Reverse-Engineering/PowerGrid/20.png)
 
+
+## Crisis Solved
+
 We can operate the generators now to activate the grid.
 
 [![21](/assets/images/Reverse-Engineering/PowerGrid/Final.gif)](/assets/images/Reverse-Engineering/PowerGrid/Final.gif)
