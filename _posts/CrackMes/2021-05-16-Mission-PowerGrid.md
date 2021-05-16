@@ -1,5 +1,5 @@
 ---
-title: "Mission: PowerGrid"
+title: "PowerGrid Crisis"
 layout: single
 date: 2021-05-16
 excerpt: "The city has been without main power for 3 days now. It's critical for heat & light.<br> Mission: Turn on the power generators to bring the PowerGrid online."
