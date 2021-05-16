@@ -14,7 +14,7 @@ You can get this challenge [here](https://crackmes.one/crackme/609ab82a33c5d4544
 ## Summary
 >* This challenge is based on the value of `CF` flag.
 >* Reboot.
->* Simple XOR.
+>* Enter EMERGENCY MODE (simple XOR).
 >* Reboot.
 
 ## Tricky Password
