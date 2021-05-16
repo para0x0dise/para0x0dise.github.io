@@ -17,13 +17,13 @@ docs:
   - title: "CrackMes"
     children:
       - title: "forn00bies Level-2"
-        url: /CrackMes/forn00bies-Level-2/
+        url: /crackmes/forn00bies-Level-2/
       - title: "forn00bies Level-3"
-        url: /CrackMes/forn00bies-Level-3/
+        url: /crackmes/forn00bies-Level-3/
       - title: "CrackMe Created By Rayko"
-        url: /CrackMes/CrackMe-Created-By-Rayko/
+        url: /crackmes/CrackMe-Created-By-Rayko/
       - title: "PowerGrid Crisis"
-        url: /CrackMes/Mission-PowerGrid/
+        url: /crackmes/Mission-PowerGrid/
 
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
