@@ -46,7 +46,7 @@ Let's dig inside `Toggle_power_Generators`
 
 ### Toggle Power Generators
 
-I don't the red area so I have to set the `CF` flag. 
+I don't want the red area so I have to set the `CF` flag. 
 
 Here I see `RCL` and `RCR`, they are like `SHR` and `SHL` but they includes CF flag in the shifting 
 
