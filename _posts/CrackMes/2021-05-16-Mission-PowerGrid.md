@@ -48,7 +48,7 @@ Let's dig inside `Toggle_power_Generators`
 
 I don't want the red area so I have to set the `CF` flag. 
 
-Here I see `RCL` and `RCR`, they are like `SHR` and `SHL` but they includes CF flag in the shifting 
+Here I see `RCL` and `RCR`, they are like `SHR` and `SHL` but they include CF flag in the shifting 
 
 [![6](/assets/images/Reverse-Engineering/PowerGrid/6.png)](/assets/images/Reverse-Engineering/PowerGrid/6.png)
 
