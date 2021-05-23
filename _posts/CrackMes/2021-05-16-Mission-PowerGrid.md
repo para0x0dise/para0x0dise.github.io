@@ -112,7 +112,7 @@ It's very easy it's just a basic `XOR` operation.
 
 Before using our debugger, there is an Anti-Debugging Check we have to defeat. 
 
-At `0x40161D`, there is a call to `IsDebuggerPresent` which checks the `NtGlobalFlag` inside `PEB` structure.
+At `0x40161D`, there is a call to `IsDebuggerPresent` which checks the `BeingDebugged` Flag inside `PEB` structure.
 
 [![16](/assets/images/Reverse-Engineering/PowerGrid/16.png)](/assets/images/Reverse-Engineering/PowerGrid/16.png)
 
