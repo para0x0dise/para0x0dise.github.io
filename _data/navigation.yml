@@ -4,6 +4,8 @@ main:
     url: /categories/#malware-analysis
   - title: "CrackMes"
     url: /categories/#CrackMes
+  - title: "Tags"
+    url: /tags/
 
 
 docs:
