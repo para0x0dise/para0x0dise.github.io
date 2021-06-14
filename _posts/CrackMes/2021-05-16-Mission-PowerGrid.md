@@ -12,13 +12,13 @@ categories:
 ---
 You can get this challenge [here](https://crackmes.one/crackme/609ab82a33c5d4544d40d5b2)
 ## Summary
->* This challenge is based on the value of `CF` flag.
+>* This challenge is based on the value of the `CF` flag.
 >* Reboot.
 >* Enter EMERGENCY MODE (simple XOR).
 >* Reboot.
 
 ## Tricky Password
-First it asks for a password. 
+First, it asks for a password. 
 
 [![1](/assets/images/Reverse-Engineering/PowerGrid/1.png)](/assets/images/Reverse-Engineering/PowerGrid/1.png)
 
@@ -38,7 +38,7 @@ Oops! It's not responding. It's time for Reversing.
 
 [![4](/assets/images/Reverse-Engineering/PowerGrid/4.png)](/assets/images/Reverse-Engineering/PowerGrid/4.png)
 
-At `0x4016CF` we have a function contains a switch case. These are the available control modules of POWERGRID.
+At `0x4016CF` we have a function that contains a switch case. These are the available control modules of POWERGRID.
 
 [![5](/assets/images/Reverse-Engineering/PowerGrid/5.png)](/assets/images/Reverse-Engineering/PowerGrid/5.png)
 
@@ -48,7 +48,7 @@ Let's dig inside `Toggle_power_Generators`
 
 I don't want the red area so I have to set the `CF` flag. 
 
-Here I see `RCL` and `RCR`, they are like `SHR` and `SHL` but they include CF flag in the shifting 
+Here I see `RCL` and `RCR`, they are like `SHR` and `SHL` but they include the CF flag in the shifting 
 
 [![6](/assets/images/Reverse-Engineering/PowerGrid/6.png)](/assets/images/Reverse-Engineering/PowerGrid/6.png)
 
@@ -59,7 +59,7 @@ Here I see `RCL` and `RCR`, they are like `SHR` and `SHL` but they include CF fl
 
 the condition variable is `ZERO`. This value is moved into `AL` and it makes `RCL` with 1 so I need to set suitable 1's to set the `CF` flag and get into the green area.
 
-As shown, this is the valid 1's that makes `CF` flag always set.
+As shown, these are the valid 1's that make the `CF` flag always set.
 
 [![7](/assets/images/Reverse-Engineering/PowerGrid/7.png)](/assets/images/Reverse-Engineering/PowerGrid/7.png)
 
@@ -83,20 +83,20 @@ Final Sequence: 11000001
 
 ### Reboot
 
-Inside this function, there is `RCL` operation with 1 but the condition variable still not set so the (CF == 0)
+Inside this function, there is an `RCL` operation with 1 but the condition variable still not set so the (CF == 0)
 
 There is a `JB` (This jump is taken when CF == 1) but the false direction will be taken and the condition variable will be OR-ed with `0x80`  
 
 [![10](/assets/images/Reverse-Engineering/PowerGrid/10.png)](/assets/images/Reverse-Engineering/PowerGrid/10.png)
 
-I can see also another OR operation with `0x40` but there is `RCR` with 1 and the jump will not be taken because the first bit of condition variable is not set. 
+I can see also another OR operation with `0x40` but there is `RCR` with 1 and the jump will not be taken because the first bit of the condition variable is not set. 
 
 [![11](/assets/images/Reverse-Engineering/PowerGrid/11.png)](/assets/images/Reverse-Engineering/PowerGrid/11.png)
 
 
 ### Check Privileges 
 
-After getting the first one from `Reboot` function, we can get into `Check_Privileges` for OR operation with `0x1`.
+After getting the first one from the `Reboot` function, we can get into `Check_Privileges` for OR operation with `0x1`.
 
 Here, there is `RCL` with 1 and `RCR` with 1, the jump will be taken in both cases.
 
@@ -112,7 +112,7 @@ It's very easy it's just a basic `XOR` operation.
 
 Before using our debugger, there is an Anti-Debugging Check we have to defeat. 
 
-At `0x40161D`, there is a call to `IsDebuggerPresent` which checks the `BeingDebugged` Flag inside `PEB` structure.
+At `0x40161D`, there is a call to `IsDebuggerPresent` which checks the `BeingDebugged` Flag inside the `PEB` structure.
 
 [![16](/assets/images/Reverse-Engineering/PowerGrid/16.png)](/assets/images/Reverse-Engineering/PowerGrid/16.png)
 
@@ -121,7 +121,7 @@ At `0x40161D`, there is a call to `IsDebuggerPresent` which checks the `BeingDeb
 
 Let's debugging now.
 
-Here I see a wired string `'/+=)8iig`, it moves each character to `AL` based on the inverted value of CODE LENGTH.
+Here I see a wired string `'/+=)8iig`, in which each character is moved to `AL` based on the inverted value of CODE LENGTH.
 
 > To make it start from the beginning of this string, the code length should be 9.
 
@@ -129,7 +129,7 @@ Here I see a wired string `'/+=)8iig`, it moves each character to `AL` based on 
 
 Now, It XORs each character with a key starting from `0x57` to `0x5f`. 
 
-With these pieces I can generate the `EMERGENCY SECRET CODE`.
+With these pieces, I can generate the `EMERGENCY SECRET CODE`.
 
 ```python
 encryptedCode = "'/+=)8iig"
