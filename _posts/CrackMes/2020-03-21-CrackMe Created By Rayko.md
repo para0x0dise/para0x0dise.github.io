@@ -37,7 +37,7 @@ private void btnCheck_Click(object sender, EventArgs e)
 }
 ```
 ### Encryption Function
-We found that the name is encypted using **Encrypt(input)**. 
+We found that the name is encrypted using **Encrypt(input)**. 
 >Now let's dig into this function:
 
 ```c#
@@ -104,7 +104,7 @@ Conversion.Oct(Strings.Asc(@string))
  = "101"
  ```
 
-1)@string = ‘A’ and we will convert it to ascii èAscii code is (65)
+1)@string = ‘A’ and we will convert it to ASCII Ascii code is (65)
 
 2)We convert it to octal oct(65) = "101"
 <br />
@@ -120,7 +120,7 @@ Conversions.ToDouble("60"+ "101") + 666
 ```
 
 ## Boo0M
-The password is : 60767
+The password is: 60767
 
 [![1](/assets/images/Reverse-Engineering/Rayko/2.png)](/assets/images/Reverse-Engineering/Rayko/2.png)
 
