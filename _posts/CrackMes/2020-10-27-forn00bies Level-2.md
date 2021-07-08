@@ -27,7 +27,7 @@ First, it initializes a buffer (user_id) and fills it of 32-byte of 0x4F (O char
 [![2](/assets/images/Reverse-Engineering/forn00bies/second.png)](/assets/images/Reverse-Engineering/forn00bies/second.png)
 
 
-Now, There are some tests that the Time-Stamp Counter pass through first:
+Now, there are some tests that the Time-Stamp Counter pass through first:
 1. Bit_Test.
 2. Comparison between Time-Stamp Counter and 0xB16B00B5.
 3. Parity Test.
@@ -58,7 +58,7 @@ Then it will replace the third byte of buffer with 0x2A (* symbol) and go to off
  [![5](/assets/images/Reverse-Engineering/forn00bies/fifth.png)](/assets/images/Reverse-Engineering/forn00bies/fifth.png)
 
 ### 28-loop
-Finally, it will make the last modifications on the buffer. It makes a loop 28 times, sets `ECX` as a counter and initializes it with 0x1C (28). It makes the following:
+Finally, it will make the last modifications to the buffer. It makes a loop 28 times, sets `ECX` as a counter, and initializes it with 0x1C (28). It makes the following:
 1. Shift-Right the Time-Stamp Counter by 1.
 2. Divide the result by 0x1A and put the remainder into `EDX`.
 3. Make a bitwise-AND operation with 1 and jump to offset `0040145E` if zero and add the next byte of buffer with 0x61.
