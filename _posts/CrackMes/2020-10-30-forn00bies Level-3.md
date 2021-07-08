@@ -22,7 +22,7 @@ You can get Challenges [here](https://github.com/jojo-0x00/CrackMEs)
 ### EFLAGS
 Before we get to the code analysis, we must remember some basics of EFLAGS.
 <br />
-EFLAGS is 32-bit register that contains the current state of the processor.
+EFLAGS is a 32-bit register that contains the current state of the processor.
 
 [![1](/assets/images/Reverse-Engineering/forn00bies/Level-3/1.png)](/assets/images/Reverse-Engineering/forn00bies/Level-3/1.png)
 
@@ -30,7 +30,7 @@ CF: Set if the arithmetic operation generates carry or borrow out of the most si
 
 PF: Set if the most significant BYTE has an even number of 1's.
 
-OF: Set if the arithmetic operation generates too large positive number or too small negative number. It's used also if we add 2 positive numbers and the sign bit exists.
+OF: Set if the arithmetic operation generates a large positive number or too small negative number. It's used also if we add 2 positive numbers and the sign bit exists.
 
 ZF: Set if the arithmetic operation generates a ZERO.
 
@@ -52,7 +52,7 @@ If we make an operation and there is a carry out in the result, the CF is set
 ## Code Analysis
 It asks to enter a decimal number and saves it at `40D020`.
 
-Then, it makes some tests on this input to modify EFLAGS and makes a jump to "BAD BOY" or not according to CF flag.
+Then, it makes some tests on this input to modify EFLAGS and makes a jump to "BAD BOY" or not according to the CF flag.
 
 [![2](/assets/images/Reverse-Engineering/forn00bies/Level-3/2.png)](/assets/images/Reverse-Engineering/forn00bies/Level-3/2.png)
 
@@ -67,11 +67,11 @@ It makes the following tests:
 ### Parity Test
 It moves the input to `EAX` at `40141E` to make the first test.
 
-First at offset `401423` the XOR instruction is used to update the PF flag. Second at offset `401426`, it uses `PUSHF` to push 16-bit of EFLAGS register and pops this value into `EBX`. Then, It makes Bit Test at offset `401428` to move PF bit to CF flag. 
+First, at offset `401423` the XOR instruction is used to update the PF flag. Second, at offset `401426`, it uses `PUSHF` to push 16-bit of EFLAGS register and pops this value into `EBX`. Then, It makes Bit Test at offset `401428` to move PF bit to CF flag. 
 ```c
 CF = PF = EFLAGS[2] 
 ```
->BT(bit test): it selects a bit at specific offset (second operand) and store it into CF flag.
+>BT(bit test): it selects a bit at a specific offset (second operand) and stores it into the CF flag.
 
 
 To continue, the PF must be set.
@@ -79,7 +79,7 @@ To continue, the PF must be set.
 [![3](/assets/images/Reverse-Engineering/forn00bies/Level-3/3.png)](/assets/images/Reverse-Engineering/forn00bies/Level-3/3.png)
 
 ### Guess Test
-At offset `40142E`, it makes a Bit Test to move the bit number 30 of the input to CF flag. Then, It makes another Bit Test at offset `401434` to move the guessed bit to CF flag. 
+At offset `40142E`, it makes a Bit Test to move the bit number 30 of the input to the CF flag. Then, It makes another Bit Test at offset `401434` to move the guessed bit to the CF flag. 
 ```c
 CF = input[30] 
 ```
@@ -134,10 +134,10 @@ We must avoid adding 1's at this area of input to continue.
 [![8](/assets/images/Reverse-Engineering/forn00bies/Level-3/8.png)](/assets/images/Reverse-Engineering/forn00bies/Level-3/8.png)
 
 ## Final check (loop into the input)
-At offset `401470`, it moves the input to `EAX` and set `EDX` as a counter at offset `40147F`. It make a Bit Test at position of `EDX` and if CF is set, `EBX` is incremented by 1 at offset `401489`
+At offset `401470`, it moves the input to `EAX` and set `EDX` as a counter at offset `40147F`. It makes a Bit Test at a position of `EDX` and if CF is set, `EBX` is incremented by 1 at offset `401489`
 
 After finishing the loop, the input (Starting from 2nd BYTE) is stored into `EAX` at offset `40148D`. Then, It makes XOR operation between `al` and `bl`.
->in other words, it compares between number of 1's inside the input and the number that the 2nd BYTE of the input contains.
+>in other words, it compares between the number of 1's inside the input and the number that the 2nd BYTE of the input contains.
 
 To get "GOOD BOY", they must be equal.
 
@@ -150,3 +150,4 @@ To get "GOOD BOY", they must be equal.
 
 ## Boo0M
 [![11](/assets/images/Reverse-Engineering/forn00bies/Level-3/11.png)](/assets/images/Reverse-Engineering/forn00bies/Level-3/11.png)
+
