@@ -1,7 +1,7 @@
 ---
 title: "Absurdities Part-1: Chrome Secrets & Defender Bypasses"
 description: "A deep dive into Chrome's key protections and how Defendnot fakes antivirus registration to bypass Windows Defender."
-date: 2025-06-14
+date: 2025-06-30
 classes: wide
 toc: true
 toc_label: "Table of contents"
