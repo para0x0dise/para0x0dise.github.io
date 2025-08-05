@@ -1,6 +1,6 @@
 ---
 title: "Absurdities Part-2: From Handle to Object"
-description: "A deep dive into PsOpenProcess and how AV filters access."
+description: "A deep dive into PsOpenProcess internals and how Kaspersky filters access."
 date: 2025-08-05
 classes: wide
 toc: true
