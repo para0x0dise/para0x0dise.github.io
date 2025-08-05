@@ -26,7 +26,7 @@ Inspired by these works, I decided to reverse-engineer `PsOpenProcess` myself to
 <div style="background-color:rgba(5, 4, 2, 0.2); border-left: 4px solidrgb(37, 29, 3); padding: 10px; margin-top: 10px; color:rgb(212, 178, 111); font-family: 'consolas'">
 Welcome to the land of undocumented structures, mysterious flags, and kernel-level headaches.<br><br>
 You'll see phrases like <i>"maybe"</i>, <i>"I think"</i>, or <i>"I believe"</i> scattered throughout this post — and that's not poor writing, it's just the reality of reversing undocumented Windows internals. Strap in, it's gonna be a fun trip.<br><br>
-Analysis was done on Windows 11, version 24H2 (build 26100.4652), and Kaspersky Endpoint Security 12.9.0.384
+Analysis was done on Windows 11, version 24H2 (build 26100.4652), and Kaspersky Endpoint Security 12.10.0.466
 </div>
 </details>
 <br>
