@@ -477,6 +477,19 @@ Returning to our analysis—during handle creation, the system invokes `ObpCallP
 
 I didn't find any reference to `ObpCallPreOperationCallbacks` inside `ObCreateHandle` which is weird instead found in `ObDuplicateObject`
 
+# Debugger Access
+As Adams mentioned, the debugging process typically begins with a call to [**`DebugActiveProcess`**](https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-debugactiveprocess), which instructs the debugger to attach to a target process by its PID.
+
+## DebugActiveProcess Under the Hood:
+Internally, it invokes a helper function—commonly referred to as ProcessIdToHandle—which attempts to obtain a handle to the target process using its process ID. This involves calling the `NtOpenProcess` syscall with the following desired access mask: `0xC3A`, which includes:
+
+- `PROCESS_VM_OPERATION`
+- `PROCESS_VM_READ`
+- `PROCESS_VM_WRITE`
+- `PROCESS_QUERY_INFORMATION`
+- `PROCESS_SUSPEND_RESUME`
+
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/31-DebugActiveProcess.png" caption="Figure 28: DebugActiveProcess" %}
 
 # Kaspersky Internals: Callback Registration
 To begin analyzing Kaspersky's callbacks, we first need to identify where they are registered. This can be achieved through two primary methods:
@@ -489,7 +502,7 @@ To begin analyzing Kaspersky's callbacks, we first need to identify where they a
 ### Using **`WinObjEx64`**:
 We can enumerate the registered system callbacks, specifically those tied to handle creation and duplication events. As shown in the figure below, Kaspersky's `klif.sys` driver registers both PreOperation and PostOperation callbacks. The pre-operation callback is located at RVA `0xD0E0`, while the post-operation callback is at RVA `0x0D50`.
 
-{% include my_figure.html src="/assets/images/Absurdities/Part-2/24-WinObjEx64SystemCallbacks.png" caption="Figure 28: Using WinObjEx64 to investigate Kaspersky's callbacks" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/24-WinObjEx64SystemCallbacks.png" caption="Figure 29: Using WinObjEx64 to investigate Kaspersky's callbacks" %}
 
 ### Using `PsProcessType` Object:
 All registered callbacks are linked through a list stored within the `PsProcessType` object at offset `0x0C8`, which is a `LIST_ENTRY` structure. Each entry in this list points to a `CALLBACK_ENTRY_ITEM`, an undocumented structure that holds detailed information about each registered callback, including function pointers and callback types.
@@ -530,14 +543,14 @@ As adam said, we can iterate through the `CallbackList` to find the callbacks re
 ```c
 kd> !list -x ".if (poi(@$extret+0x28) != 0) { u poi(@$extret+0x28); }" (poi(nt!PsProcessType)+0xc8)
 ```
-{% include my_figure.html src="/assets/images/Absurdities/Part-2/25-windbgCallbackList.png" caption="Figure 29: Iterating through the CallbackList" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/25-windbgCallbackList.png" caption="Figure 30: Iterating through the CallbackList" %}
 
 ## Pre-Operation Callback
 It receives one parameter which is a pointer to the [**`_OB_PRE_OPERATION_INFORMATION`**](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_ob_pre_operation_information) structure. This structure is similar to **`_OB_POST_OPERATION_INFORMATION`** and contains critical details such as the type of operation being performed (e.g., handle creation or duplication), the object type, a pointer to the object itself, and the desired access rights.
 
 The callback begins by checking whether the handle in question is a kernel handle. If it is, the function exits early by returning Zero. Next, it verifies the type of operation requested—either `HandleOpen` or `HandleDuplicate`—and retrieves the desired access rights for the associated object (e.g., process or thread).
 
-{% include my_figure.html src="/assets/images/Absurdities/Part-2/26-Kasper_retrieveObjectOperationInformation.png" caption="Figure 30: Retrieving operation information from object" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/26-Kasper_retrieveObjectOperationInformation.png" caption="Figure 31: Retrieving operation information from object" %}
 
 It then confirms that the object type is either `PsProcessType` or `PsThreadType` and performs a validation check on the requested access. If the validation fails with `STATUS_ACCESS_DENIED`, the callback proceeds to filter the access attempt. Only the following access rights are explicitly allowed:
 - `PROCESS_QUERY_INFORMATION`
@@ -546,14 +559,14 @@ It then confirms that the object type is either `PsProcessType` or `PsThreadType
 - `READ_CONTROL`
 - `SYNCHRONIZE`
 
-{% include my_figure.html src="/assets/images/Absurdities/Part-2/27-kasper_FilterObjectAccess.png" caption="Figure 31: Filtering handle opening access" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/27-kasper_FilterObjectAccess.png" caption="Figure 32: Filtering handle opening access" %}
 
-{% include my_figure.html src="/assets/images/Absurdities/Part-2/28-kasper_AccessValidator.png" caption="Figure 32: Denying access" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/28-kasper_AccessValidator.png" caption="Figure 33: Denying access" %}
 
 
 The same access filtering logic is also applied when a handle is being duplicated, ensuring that only specific rights are permitted regardless of whether the operation is a handle open or duplication attempt.
 
-{% include my_figure.html src="/assets/images/Absurdities/Part-2/29-HandleDuplicationFilter.png" caption="Figure 33: Filtering handle duplication access" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/29-HandleDuplicationFilter.png" caption="Figure 34: Filtering handle duplication access" %}
 
 Similarly, the same access filtering logic is applied to thread objects. Only a limited set of access rights are permitted during handle operations, including:
 - `THREAD_GET_CONTEXT`
@@ -562,7 +575,7 @@ Similarly, the same access filtering logic is applied to thread objects. Only a 
 - `READ_CONTROL`
 - `SYNCHRONIZE`
 
-{% include my_figure.html src="/assets/images/Absurdities/Part-2/30-FilterThreadAccess.png" caption="Figure 34: Filtering thread access" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-2/30-FilterThreadAccess.png" caption="Figure 35: Filtering thread access" %}
 
 # Conclusion
 In this post, I demonstrated how the Windows kernel manages handle creation through the internal workings of the `PsOpenProcess` function, breaking down its key stages—from object resolution to access validation and auditing. Additionally, we explored how Kaspersky’s `klif.sys` driver hooks into this process using pre-operation callbacks to enforce strict access filtering logic on process and thread handles.
