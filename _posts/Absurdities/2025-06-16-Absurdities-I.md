@@ -26,7 +26,7 @@ The goals of this series are threefold:
 # Why is it called "Absurdities"?
 The title "Absurdities" reflects the intentionally unconventional nature of this blog series. Each post will explore two or more unrelated techniques—sometimes odd, unexpected, or seemingly disconnected. While the techniques themselves may appear "absurd" when grouped together, the unifying theme is how to detect them effectively.
 
-{% include my_figure.html src="/assets/images/Absurdities/Part-1/absurditites.gif" caption="Figure 1: Prestige E6" %}
+{% include my_figure.html src="/assets/images/Absurdities/Part-1/absurditites.gif" caption="Figure 1: Donald Trump" %}
 
 # Summary
 In this post, we'll explore two distinct techniques often encountered in the context of malware analysis and infostealers:
