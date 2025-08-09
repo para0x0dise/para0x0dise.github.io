@@ -1,6 +1,6 @@
 ---
 title: "Absurdities Part-2: From Handle to Object"
-description: "A deep dive into PsOpenProcess internals and how Kaspersky filters access."
+description: "A deep dive into PsOpenProcess internals and how Kaspersky filters access to debuggers."
 date: 2025-08-05
 classes: wide
 toc: true
@@ -280,6 +280,7 @@ To ensure the process object stays valid during access, the kernel then calls `O
 If the thread ID is not provided, the kernel takes an alternate route to locate the target process.
 
 In this case, it attempts to retrieve the `_EPROCESS` structure directly from `PspCidTable`. According to [Eversinc33](https://eversinc33.com/posts/anti-anti-rootkit-part-ii.html), `PspCidTable` is a pointer to a system-wide handle table that contains entries for both processes and threads. This table serves as the underlying pool used by the kernel to manage and generate unique client identifiers (CIDs), including process IDs and thread IDs. Each entry maps a CID to its corresponding kernel object, making it a key component in object resolution when thread information is unavailable.
+
 
 To achieve this, the system uses the undocumented function `ExpLookupHandleTableEntry`, which returns a pointer to a `_HANDLE_TABLE_ENTRY` corresponding to the provided PID value. Based on my observations, it appears that this function attempts to derive the handle table entry directly from the PID, as it checks whether the PID is greater than or equal to the `NextHandleNeedingPool` value. This supports the idea that the PID serves as the handle used to retrieve the entry from the handle table. 
 
