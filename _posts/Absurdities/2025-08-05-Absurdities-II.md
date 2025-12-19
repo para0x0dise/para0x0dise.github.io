@@ -54,21 +54,21 @@ kd> dt nt!_EPROCESS
    ........
 ```
 
-All handles within a process are organized through a doubly linked list managed by the `_HANDLE_TABLE` structure. This structure contains entries of type `_HANDLE_TABLE_ENTRY`, with each entry representing a handle associated with the target process.
+All handles within a process are organized through a doubly linked list managed by the `_HANDLE_TABLE` structure. This structure contains an array of `_HANDLE_TABLE_ENTRY` structures, which is based on `TableCode` field.
 
-Each `_HANDLE_TABLE_ENTRY` typically points to a kernel object, and the first 8 bytes of the entry are used to store the address of that object in kernel memory.
+Each handle value is actually an index inside that array (`TableCode + HandleValue*4 -> Handle Entry Address`)
 
 ```c
-kd> dt nt!_HANDLE_TABLE ffffe68ac84db380
-   +0x000 NextHandleNeedingPool : 0x1000 // -> Mid-level table
+kd> dt nt!_HANDLE_TABLE 0xffffc98d`ce0c7e40
+   +0x000 NextHandleNeedingPool : 0x400
    +0x004 ExtraInfoPages   : 0n0
-   +0x008 TableCode        : 0xffffe68a`c87ff001
-   +0x010 QuotaProcess     : 0xffffd285`8642c080 _EPROCESS
-   +0x018 HandleTableList  : _LIST_ENTRY [ 0xffffe68a`c86ffb18 - 0xffffe68a`c8340858 ] // -> linked list of handles
-   +0x028 UniqueProcessId  : 0x4d8
-   +0x02c Flags            : 2
+   +0x008 TableCode        : 0xffffc98d`ce9ff000 // -> Array of Handle Table Entries
+   +0x010 QuotaProcess     : 0xffff8a82`2dfc8080 _EPROCESS
+   +0x018 HandleTableList  : _LIST_ENTRY [ 0xffffc98d`ce0c6558 - 0xffffc98d`ce0c63d8 ]
+   +0x028 UniqueProcessId  : 0x2264
+   +0x02c Flags            : 0
    +0x02c StrictFIFO       : 0y0
-   +0x02c EnableHandleExceptions : 0y1
+   +0x02c EnableHandleExceptions : 0y0
    +0x02c Rundown          : 0y0
    +0x02c Duplicated       : 0y0
    +0x02c RaiseUMExceptionOnInvalidHandleClose : 0y0
@@ -76,27 +76,36 @@ kd> dt nt!_HANDLE_TABLE ffffe68ac84db380
    +0x038 HandleTableLock  : _EX_PUSH_LOCK
    +0x040 FreeLists        : [1] _HANDLE_TABLE_FREE_LIST
    +0x040 ActualEntry      : [32]  ""
-   +0x060 DebugInfo        : (null)
+   +0x060 DebugInfo        : (null) 
 
-kd> dx -id 0,0,ffffd285816a8040 -r1 (*((ntkrnlmp!_LIST_ENTRY *)0xffffe68ac84db398))
-(*((ntkrnlmp!_LIST_ENTRY *)0xffffe68ac84db398))                 [Type: _LIST_ENTRY]
-  [+0x000] Flink            : 0xffffe68ac86ffb18 [Type: _LIST_ENTRY *]
-  [+0x008] Blink            : 0xffffe68ac8340858 [Type: _LIST_ENTRY *]
+kd> dq 0xffffc98d`ce9ff000
+ffffc98d`ce9ff000  00000000`00000000 00000000`00000000 // -> Reserved
+ffffc98d`ce9ff010  8a822d48`d330fff5 00000000`001f0003
+ffffc98d`ce9ff020  8a822d48`d7b0ffed 00000000`001f0003
+ffffc98d`ce9ff030  8a822dca`9dd0ffeb 00000000`00000001
+ffffc98d`ce9ff040  8a822e26`a490ffcf 00000000`001f0003
+ffffc98d`ce9ff050  8a822dd1`cd40ffa1 00000000`000f00ff
+ffffc98d`ce9ff060  8a822d4d`9c90fff5 00000000`00100002
+ffffc98d`ce9ff070  8a822dca`aee0fff9 00000000`00000001
 
-kd> dt nt!_HANDLE_TABLE_ENTRY 0xffffe68ac86ffb18
-   +0x000 VolatileLowValue : 0n-27991234053736
-   +0x000 LowValue         : 0n-27991234053736 // -> Handle's low value
-   +0x000 InfoTable        : 0xffffe68a`c86ff998 _HANDLE_TABLE_ENTRY_INFO
-   +0x008 HighValue        : 0n-27991236299880 // -> Handle's high value
-   +0x008 NextFreeHandleEntry : 0xffffe68a`c84db398 _HANDLE_TABLE_ENTRY // -> Next handle entry
+kd> dt nt!_HANDLE_TABLE_ENTRY ffffc98d`ce9ff010
+   +0x000 VolatileLowValue : 0n-8466154558699012107
+   +0x000 LowValue         : 0n-8466154558699012107
+   +0x000 InfoTable        : 0x8a822d48`d330fff5 _HANDLE_TABLE_ENTRY_INFO
+   +0x008 HighValue        : 0n2031619
+   +0x008 NextFreeHandleEntry : 0x00000000`001f0003 _HANDLE_TABLE_ENTRY
    +0x008 LeafHandleValue  : _EXHANDLE
-   +0x000 RefCountField    : 0n-27991234053736
-   +0x000 Unlocked         : 0y0
-   +0x000 RefCnt           : 0y1111110011001100 (0xfccc)
-   +0x000 Attributes       : 0y111
-   +0x000 ObjectPointerBits : 0y11111111111111111110011010001010110010000110 (0xffffe68ac86)
-   +0x008 GrantedAccessBits : 0y0010011011011001110011000 (0x4db398)
+   +0x000 RefCountField    : 0n-8466154558699012107
+   +0x000 Unlocked         : 0y1
+   +0x000 RefCnt           : 0y0111111111111010 (0x7ffa)
+   +0x000 Attributes       : 0y000
+   +0x000 ObjectPointerBits : 0y10001010100000100010110101001000110100110011 (0x8a822d48d33)
+   +0x008 GrantedAccessBits : 0y0000111110000000000000011 (0x1f0003)
+   +0x008 NoRightsUpgrade  : 0y0
+   +0x008 Spare1           : 0y000000 (0)
+   +0x00c Spare2           : 0
 ```
+
 Each table is initialized using the undocumented function `ExpAllocateTablePagedPool`, which allocates a page of memory and sets up the initial table structure. Since each page is 4096 bytes and each handle entry is 16 bytes, this only allows space for 256 entries (`4096 / 16 = 256`). Obviously, this isn't enough for processes that require more handles.
 
 To scale beyond this limit, Windows uses a three-level table structure to dynamically manage handle entries:
@@ -611,3 +620,5 @@ In this post, I demonstrated how the Windows kernel manages handle creation thro
 [14] [SeAccessCheck function (wdm.h) - Windows drivers](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-seaccesscheck)
 
 [15] [HackTricks - Windows Access Tokens](https://github.com/b4rdia/HackTricks/blob/master/windows-hardening/windows-local-privilege-escalation/access-tokens.md)
+
+[16] [Windows Kernel Internals: Handle Table](https://imphash.medium.com/windows-process-internals-a-few-concepts-to-know-before-jumping-on-memory-forensics-part-5-a-2368187685e)
