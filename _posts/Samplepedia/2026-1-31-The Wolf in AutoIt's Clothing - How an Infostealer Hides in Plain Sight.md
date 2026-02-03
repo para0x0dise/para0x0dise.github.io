@@ -126,7 +126,7 @@ EndFunc
 ```
 
 ## Process Injection
-The script performs a form of process hollowing / run-in-memory injection. It creates a suspended process (one of several options depending on environment) and then overwrites the target process image with the decrypted payload:
+The script performs a form of classic process hollowing injection. It creates a suspended process (one of several options depending on environment) and then overwrites the target process image with the decrypted payload:
 
 * Primary target: `TapiUnattend.exe` (Windows Telephony service)
 * Alternate: `cscript.exe` (used when Bitdefender is present — the script also drops a shortcut `ScanCraft.lnk`)
