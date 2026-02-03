@@ -53,7 +53,7 @@ Analysis of the sample container revealed a `.cab` archive with multiple embedde
 Sandbox traces show `Charlotte.eml` executing via cmd, assembling additional files under `%TMP%\IXP000.TMP\143947`. To accelerate analysis I used the debugger to break at the earliest script execution point, allowing dropping (`Corner.com`) and the `R` script (Compiled AutoIt script).
 {% include my_figure.html src="/assets/images/Samplepedia/AutoitVidar/9-embeddedAutoit.png" caption="Figure 11: Embedded Autoit Executable" %}
 
-We can decompile the AutoIt script using daovantrong's tool ([myAutToExe](https://github.com/daovantrong/myAutToExe)) and then deobfuscated the result. The R script uses a trivial obfuscation: strings are Caesar-shift encoded, concatenated and separated using the N character. I automated deobfuscation (script available in my [repository](https://github.com/para0x0dise/Wubba-Lubba-Dub-Dub/blob/main/samples/eee8a68511bd00ff98425cf9e9bd12873a5e742548fe7e2b72add7ff8dbabb24/Files/deobfuscate_r.py)) to quickly reveal the decoded strings. Example outputs:
+We can decompile the AutoIt script using daovantrong's tool ([myAutToExe](https://github.com/daovantrong/myAutToExe)) and then deobfuscated the result. The R script uses a trivial obfuscation: strings are Caesar-shift encoded, concatenated and separated using the N character. I automated deobfuscation (script available in my [repository](https://github.com/para0x0dise/Wubba-Lubba-Dub-Dub/blob/main/samples/Vidar_eee8a68511bd00ff98425cf9e9bd12873a5e742548fe7e2b72add7ff8dbabb24/Files/deobfuscate_r.py)) to quickly reveal the decoded strings. Example outputs:
 
 ```plaintext
 [1] Key: 9 (10 - 1)
