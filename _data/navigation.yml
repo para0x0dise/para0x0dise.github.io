@@ -1,10 +1,4 @@
 # main links
 main:
-  - title: "Malware Analysis"
-    url: /categories/#malware-analysis
-  - title: "CrackMes"
-    url: /categories/#crackmes
-  - title: "Absurdities"
-    url: /categories/#absurdities
   - title: "All Categories"
     url: /categories
