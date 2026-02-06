@@ -198,13 +198,13 @@ Finally, we can see the C2 server inside the strings of the PE file.
 
 # IOCs
 
-| Type                                      | Data                                                           |
-| ----------------------------------------- | -------------------------------------------------------------- |
-| Main Installer                            | eee8a68511bd00ff98425cf9e9bd12873a5e742548fe7e2b72add7ff8dbabb24 |
-| AutoIt Compiled Script                   | db25a4b3c36f496d6e248d21470e5b15db002646bb3a7a26377e6b47d99e5058 |
-| AutoIt Decompiled Script (Obfuscated)    | 5126ba17f47cbf4bf71f26ee4323d26f7585f02ffeaab3ab701bb0155fcc370a |
-| Vidar Payload    | a90f3da6a644f561acf067cea2655deb285dc1588f17758a43322a739d28930c |
-| C2 Server                                | hxxps[:]//5[.]75[.]220[.]143                                   |
-| Telegram Channel                         | hxxps[:]//telegram[.]me/tkt1kr                                 |
-| Steam Profile                            | hxxps[:]//steamcommunity[.]com/profiles/76561198770591383      |
+| Type                                  | Data                                                             |
+| ------------------------------------- | ---------------------------------------------------------------- |
+| Main Installer                        | eee8a68511bd00ff98425cf9e9bd12873a5e742548fe7e2b72add7ff8dbabb24 |
+| AutoIt Compiled Script                | db25a4b3c36f496d6e248d21470e5b15db002646bb3a7a26377e6b47d99e5058 |
+| AutoIt Decompiled Script (Obfuscated) | 5126ba17f47cbf4bf71f26ee4323d26f7585f02ffeaab3ab701bb0155fcc370a |
+| Vidar Payload                         | a90f3da6a644f561acf067cea2655deb285dc1588f17758a43322a739d28930c |
+| C2 Server                             | hxxps[:]//5[.]75[.]220[.]143                                     |
+| Telegram Channel                      | hxxps[:]//telegram[.]me/tkt1kr                                   |
+| Steam Profile                         | hxxps[:]//steamcommunity[.]com/profiles/76561198770591383        |
 
