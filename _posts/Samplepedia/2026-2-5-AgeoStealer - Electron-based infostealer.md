@@ -2,7 +2,7 @@
 title: "[SamplePedia] AgeoStealer - Electron-based infostealer"
 layout: single
 date: 2026-2-5
-description: "How attacker could hide an infostealer inside electron application "
+description: "How attacker could hide an infostealer inside electron application"
 toc: true
 classes: wide
 toc_label: "Table of contents"
@@ -135,12 +135,12 @@ POST https://ageostealer.wtf/api/backupcodes
 
 # IOCs
 
-| Type                              | Data                                                             |
-| --------------------------------- | ---------------------------------------------------------------- |
-| Main NSIS-Installer               | dca13fc006a3b55756ae0534bd0d37a1b53a219b5d7de236f20b0262f3662659 |
-| Evil Electron Application         | ff20400a7e7c164d6b03b2bbc1d757e828a69cadd9cae5fdf3b9c9ca54eacf5a |
-| Encrypted JS File                 | 887f48ad1b2bf13be25b1142200ec1e0482a07c3fa7a87cca373a6807d4af7db |
-| Decrypted JS File                 | 9f082ee24a90d5fbcde99155985d0fda01ce6dc29d2d68958f02339eac54aede |
-| websocket_url                     | ws[:]//213[.]255[.]247[.]174:3200                                |
-| Stealers's C2 Server              | https[:]//ageostealer[.]wtf                                      |
-| Stealer's API Authentication/Name | Ageox2IC58pd6m1C73x                                              |
+| Type                      | Data                                                             |
+| ------------------------- | ---------------------------------------------------------------- |
+| Main NSIS-Installer       | dca13fc006a3b55756ae0534bd0d37a1b53a219b5d7de236f20b0262f3662659 |
+| Evil Electron Application | ff20400a7e7c164d6b03b2bbc1d757e828a69cadd9cae5fdf3b9c9ca54eacf5a |
+| Encrypted JS File         | 887f48ad1b2bf13be25b1142200ec1e0482a07c3fa7a87cca373a6807d4af7db |
+| Decrypted JS File         | 9f082ee24a90d5fbcde99155985d0fda01ce6dc29d2d68958f02339eac54aede |
+| websocket_url             | ws[:]//213[.]255[.]247[.]174:3200                                |
+| Stealers's C2 Server      | https[:]//ageostealer[.]wtf                                      |
+| Stealer's API key         | Ageox2IC58pd6m1C73x                                              |
